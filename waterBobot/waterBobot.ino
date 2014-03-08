@@ -159,10 +159,10 @@ void loop(){
         sval = val;
         sval = sval-64;
         midi_state = 0;
-        if(ctrl==0xC0){
+        if(ctrl==0x50){
           target_speed_left = fix16_from_int(sval);
         }
-        if(ctrl==0xC1){
+        if(ctrl==0x51){
           target_speed_right = fix16_from_int(sval);
         }
       }
@@ -219,15 +219,15 @@ void loop(){
        moveMotor(4,speedMatch_right);
 
        // Send information
-       sendControl(0xA0,abs(fix16_to_int(speed1)));
-       sendControl(0xA1,abs(fix16_to_int(speed2)));
-       sendControl(0xA2,abs(fix16_to_int(speed3)));
-       sendControl(0xA3,abs(fix16_to_int(speed4)));
+       sendControl(0x20,abs(fix16_to_int(speed1)));
+       sendControl(0x21,abs(fix16_to_int(speed2)));
+       sendControl(0x22,abs(fix16_to_int(speed3)));
+       sendControl(0x23,abs(fix16_to_int(speed4)));
 
-       sendControl(0xB0,fix16_to_int(motor1Current));
-       sendControl(0xB1,fix16_to_int(motor2Current));
-       sendControl(0xB2,fix16_to_int(motor3Current));
-       sendControl(0xB3,fix16_to_int(motor4Current));
+       sendControl(0x30,fix16_to_int(motor1Current));
+       sendControl(0x31,fix16_to_int(motor2Current));
+       sendControl(0x32,fix16_to_int(motor3Current));
+       sendControl(0x33,fix16_to_int(motor4Current));
 
     }
   }
