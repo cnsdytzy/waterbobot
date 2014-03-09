@@ -7,9 +7,9 @@
 #X obj 668 -166 udpreceive 8000;
 #X obj 668 -122 unpackOSC;
 #X obj 668 -84 route /1/stop_left /1/stop_right;
-#X obj 270 -85 comport /dev/ttyUSB1 115200;
+#X obj 270 -85 comport 1 115200;
 #X msg 292 -135 devices;
-#X msg 367 -135 open 33;
+#X msg 367 -135 open 1;
 #X floatatom 22 400 5 0 0 0 - - -;
 #X obj 269 -57 s sin;
 #X obj 240 300 r sin;
