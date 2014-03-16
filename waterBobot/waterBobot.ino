@@ -32,18 +32,22 @@ uint8_t encoder4State;
 #define motor1DirPin 5
 #define motor1PWMPin 4
 fix16_t motor1Current;
+#define motor1CurentPin 12
 
 #define motor2DirPin 7
 #define motor2PWMPin 6
 fix16_t motor2Current;
+#define motor2CurentPin 13
 
 #define motor3DirPin 9
 #define motor3PWMPin 8
 fix16_t motor3Current;
+#define motor3CurentPin 14
 
 #define motor4DirPin 11
 #define motor4PWMPin 10
 fix16_t motor4Current;
+#define motor4CurentPin 15
 
 #define MAX_SPEED 4194304
 
@@ -53,6 +57,15 @@ fix16_t speed1,speed2,speed3,speed4;
 fix16_t motor1state,motor2state,motor3state,motor4state;
 uint8_t trigger;
 uint8_t moving;
+
+/*    LINE SENSORS    */
+#define sensor1Pin 0
+uint16_t sensor1val;
+#define sensor2Pin 1
+uint16_t sensor2val;
+#define sensor3Pin 2
+uint16_t sensor3val;
+
 
 void processEncoder(uint8_t &state, uint8_t enc1_pin, uint8_t enc2_pin, int16_t &pos);
 void moveMotor(uint8_t motor, fix16_t vel);
@@ -228,6 +241,10 @@ void loop(){
        sendControl(0x31,fix16_to_int(motor2Current));
        sendControl(0x32,fix16_to_int(motor3Current));
        sendControl(0x33,fix16_to_int(motor4Current));
+       
+       sendControl(0x40,sensor1val);
+       sendControl(0x41,sensor2val);
+       sendControl(0x42,sensor3val);
 
     }
   }
@@ -236,29 +253,31 @@ void loop(){
 void timerIsr()
 {
     int v;
-    //analogReadStep1(12);
     speed1 = fix16_from_int(encoder1Pos);
-    v = analogRead(12);
+    v = analogRead(motor1CurentPin);
     delayMicroseconds(20);
 
-    //analogReadStep1(13);
     motor1Current = fix16_from_int(v);
     speed2 = fix16_from_int(encoder2Pos);
-    v = analogRead(13);
+    v = analogRead(motor2CurentPin);
     delayMicroseconds(20);
 
-    //analogReadStep1(14);
     motor2Current = fix16_from_int(v);
     speed3 = fix16_from_int(encoder3Pos);
-    v = analogRead(14);
+    v = analogRead(motor3CurentPin);
     delayMicroseconds(20);
 
 
-    //analogReadStep1(15);
     motor3Current = fix16_from_int(v);
     speed4 = fix16_from_int(encoder4Pos);
-    v = analogRead(15);
+    v = analogRead(motor4CurentPin);
     motor4Current = fix16_from_int(v);
+
+
+    sensor1val = analogRead(sensor1Pin) >> 2;delayMicroseconds(20);
+    sensor2val = analogRead(sensor2Pin) >> 2;delayMicroseconds(20);
+    sensor3val = analogRead(sensor3Pin) >> 2;delayMicroseconds(20);
+
 
     encoder1Pos=0;
     encoder2Pos=0;
